@@ -16,6 +16,9 @@ namespace Collaboo.App.WebAPI.DbContexts
         
         public DbSet<Skill> Skills { get; set; }
         public DbSet<UserSkills> UserSkills { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectMember> ProjectMember { get; set; }
+        public DbSet<ProjectRequirement> ProjectRequirments { get; set; }
     }
 
 }
