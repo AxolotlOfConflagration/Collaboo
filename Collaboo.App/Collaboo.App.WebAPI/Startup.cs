@@ -112,6 +112,8 @@ namespace Collaboo.App.WebAPI
             {
                 app.UseHsts();
             }
+            app.UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
