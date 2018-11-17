@@ -53,6 +53,8 @@ namespace Collaboo.App.WebAPI
 
             Register(services);
 
+            services.AddCors();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAuthentication(options =>
                 {
@@ -110,6 +112,8 @@ namespace Collaboo.App.WebAPI
             {
                 app.UseHsts();
             }
+            app.UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
