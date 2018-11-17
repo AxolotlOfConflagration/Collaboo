@@ -8,6 +8,7 @@ using Octokit.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Collaboo.App.WebAPI.Services
 {
@@ -41,20 +42,20 @@ namespace Collaboo.App.WebAPI.Services
 
         public async Task<UserDTO> GetAuthUserAsync(string login, Credentials gitCredentials)
         {
-            var github = new GitHubClient(
-                new ProductHeaderValue("AspNetCoreGitHubAuth"),
-                new InMemoryCredentialStore(gitCredentials));
-            var gitUser = await github.User.Get(login);
-            var gitSkills = _skillsServices.GetSkillsForUser(gitUser.Id);
-            var skills = Mapper.Map<IEnumerable<UserSkillDTO>>(gitSkills);
+            //var github = new GitHubClient(
+            //    new ProductHeaderValue("AspNetCoreGitHubAuth"),
+            //    new InMemoryCredentialStore(gitCredentials));
 
-            var user = new UserDTO
-            {
-                AvatarUrl = gitUser.AvatarUrl,
-                Id = gitUser.Id,
-                Name = gitUser.Name,
-                Skills = skills
-            };
+            var dbUser = await _context.Users
+                .Include(u => u.UserSkills)
+                .ThenInclude(us => us.Skill)
+                .FirstOrDefaultAsync(u => u.Login == login);
+
+            //var gitUser = await github.User.Get(login);
+            //var gitSkills = _skillsServices.GetSkillsForUser(gitUser.Id);
+            //var skills = Mapper.Map<IEnumerable<UserSkillDTO>>(gitSkills);
+
+            var user = _mapper.Map<UserDTO>(dbUser);
 
             return user;
         }
@@ -70,7 +71,7 @@ namespace Collaboo.App.WebAPI.Services
             {
                 AvatarUrl = gitUser.AvatarUrl,
                 Id = gitUser.Id,
-                Name = gitUser.Name,
+                Login = gitUser.Name,
                 Skills = skills
             };
 
