@@ -8,7 +8,7 @@ namespace Collaboo.App.Recommendation.Helpers
         public static async Task<HttpResponseMessage> Get(string requestUri, string acceptHeader = "application/json")
         {
           var builder = new HttpRequestBuilder().AddMethod(HttpMethod.Get).AddAcceptHeader(acceptHeader).AddRequestUri(requestUri);
-          return await builder.SendAsync();
+          return await  builder.SendAsync();
         }
 }
 }

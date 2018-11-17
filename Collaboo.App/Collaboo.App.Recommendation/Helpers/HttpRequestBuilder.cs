@@ -1,3 +1,7 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
 namespace Collaboo.App.Recommendation.Helpers
 {
     internal class HttpRequestBuilder
@@ -66,8 +70,9 @@ namespace Collaboo.App.Recommendation.Helpers
 
           HttpClient client = new HttpClient(handler);
           client.Timeout = _timeout;
+          
 
-          return await client.SendAsync(request);
+          return await  client.SendAsync(request);
         }
 
         private void CheckArguments()
