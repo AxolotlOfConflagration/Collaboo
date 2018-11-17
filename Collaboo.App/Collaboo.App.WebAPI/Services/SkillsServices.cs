@@ -27,14 +27,20 @@ namespace Collaboo.App.WebAPI.Services
         public Task AddSkillForUser(UserSkills userSkill)
         {
             _context.UserSkills.Add(userSkill);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Skill> GetSkills()
+        public Task<Skill> GetSkill(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<UserSkills> GetSkillsForUser(int id)
+        public Task<IEnumerable<Skill>> GetSkills()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<UserSkills>> GetSkillsForUser(int id)
         {
             throw new NotImplementedException();
         }

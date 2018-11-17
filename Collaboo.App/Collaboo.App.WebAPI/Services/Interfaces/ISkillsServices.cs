@@ -10,8 +10,9 @@ namespace Collaboo.App.WebAPI.Services.Interfaces
 {
     public interface ISkillsServices
     {
-        IEnumerable<Skill> GetSkills();
-        IEnumerable<UserSkills> GetSkillsForUser(int id);
+        Task<IEnumerable<Skill>> GetSkills();
+        Task<Skill> GetSkill(int id);
+        Task<IEnumerable<UserSkills>> GetSkillsForUser(int id);
         Task AddSkill(Skill skill);
         Task AddSkillForUser(UserSkills userSkill);
     }

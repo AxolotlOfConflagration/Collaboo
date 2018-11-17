@@ -11,6 +11,8 @@ namespace Collaboo.App.WebAPI.Helpers.AutoMapper
             CreateMap<Project, ProjectDTO>().ReverseMap();
             CreateMap<ProjectRequirement, ProjectRequirementDTO>().ReverseMap();
             CreateMap<Project, AddProjectDTO>().ReverseMap();
+            CreateMap<Skill, SkillDTO>().ReverseMap();
+            CreateMap<UserSkills, UserSkillDTO>().ReverseMap();
         }
     }
 }
