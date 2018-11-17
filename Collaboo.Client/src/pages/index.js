@@ -4,12 +4,33 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
 import Navbar from '../components/navbar';
+import Feed from '../components/feed/feed';
+import Sidebar from '../components/sidebar';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { CreateProject } from '../containers/create-project';
+import { Provider } from 'react-redux';
+import { store } from '../reducers/store';
+import classNames from 'classnames';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: '100%'
+  },
+  container: {
+    width: '95%',
+    maxWidth: "1200px",
+    margin: "auto"
+  },
+  sidebar: {
+    textAlign: "center"
+  },
+  avatar: {
+    margin: "auto",
+  },
+  bigAvatar: {
+    width: 120,
+    height: 120,
+    margin: "auto",
   },
 });
 
@@ -33,29 +54,31 @@ class Index extends React.Component {
   render() {
     const { classes } = this.props;
     
-    const Index = () => <h2>Home</h2>;
-    const About = () => <h2>About</h2>;
     const Users = () => <h2>Users</h2>;
 
     return (
-      <div className={classes.root}>
+      <Provider store={store}>
+      <Router>
+        <div className={classes.root}>
         <Navbar />
         <br />
-        <Grid container>
-        <Grid item md={3}>
-          menu
-        </Grid>
-          
-            <Router>
-            <Grid item md={9}>
-              <Route path="/" exact component={Index} />
-              <Route path="/about/" component={About} />
+        <Grid container spacing={24} className={classes.container}>
+            <Grid item md={3}> 
+              <Sidebar />
+            </Grid>
+            <Grid item md={6}>
+              <Route path="/" exact component={Feed} />
+              <Route path="/new-project" component={CreateProject} />
               <Route path="/users/" component={Users} />
-              </Grid>
-            </Router>
+            </Grid>
+            <Grid item md={3}> 
+              Users activity or sth
+            </Grid>
         </Grid>
         
-      </div>
+        </div>
+      </Router>
+      </Provider>
     );
   }
 }
