@@ -53,5 +53,31 @@ namespace Collaboo.App.WebAPI.Services
             return projectForUser
                 .Where(p => p.OwnerId == userId || p.ProjectMembers.Any(pm => pm.UserId == userId));
         }
+
+        public async Task UpdateProjectAsync(UpdateProjectDTO projectToUpdate, int projectId)
+        {
+            var project = await GetProjectAsync(projectId);
+            UpdateProject(project, projectToUpdate);
+            _context.Projects.Update(project);
+            await _context.SaveChangesAsync();
+        }
+
+        public void UpdateProject(Project project, UpdateProjectDTO projectToUpdate)
+        {
+            if(!String.IsNullOrEmpty(projectToUpdate.Description))
+            {
+                project.Description = projectToUpdate.Description;
+            }
+
+            if(!String.IsNullOrEmpty(projectToUpdate.ProjectName))
+            {
+                project.ProjectName = projectToUpdate.ProjectName;
+            }
+            
+            if(!String.IsNullOrEmpty(projectToUpdate.GitHubRepoUrl))
+            {
+                project.GitHubRepoUrl = projectToUpdate.GitHubRepoUrl;
+            }
+        }
     }
 }

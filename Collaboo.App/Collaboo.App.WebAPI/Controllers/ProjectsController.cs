@@ -43,5 +43,12 @@ namespace Collaboo.App.WebAPI.Controllers
             await _projectService.CreateProjectAsync(project);
             return NoContent();
         }
+
+        [HttpPut("api/users/{userId}/projects/{projectId}")]
+        public async Task<IActionResult> UpdateProject([FromRoute] int userId, [FromRoute] int projectId, [FromBody] UpdateProjectDTO projectToUpdate)
+        {
+            await _projectService.UpdateProjectAsync(projectToUpdate, projectId);
+            return NoContent(); 
+        }
     }
 }
