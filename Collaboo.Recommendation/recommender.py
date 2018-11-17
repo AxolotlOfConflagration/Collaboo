@@ -1,6 +1,10 @@
 import pandas as pd
+from collections import defaultdict
+from random import sample, randrange, shuffle
+from surprise import SVD, accuracy, Reader, Dataset, NormalPredictor, BaselineOnly
+from surprise.model_selection import cross_validate
+from surprise.model_selection import train_test_split
 from random import sample, randrange
-# from itertools import izip
 
 class Recommender:
     def __init__(self):
@@ -38,6 +42,20 @@ class Recommender:
         'perl' : pd.Series([randrange(1, 11) for _ in range(0, 50)], index=sample(range(100), 50))
          }
 
+        x = [ i for i in range(50)]*5
+        y = x.copy()
+        shuffle(x)
+        shuffle(y)
+
+        self.ratings_dict = { 'projectID': x,
+                                                'userID': y,
+                                                'rating': [randrange(1, 6) for _ in range(0, 250)],
+                                            }
+        self.ratings_dict_u = { 'userID': x,
+                                                'userID2': y,
+                                                'rating': [randrange(1, 6) for _ in range(0, 250)],
+                                            }
+
         self.df = pd.DataFrame(d)
         self.df_p = pd.DataFrame(p)
         # print(self.df.head())
@@ -61,12 +79,46 @@ class Recommender:
         ui_all = dict(zip(ui_indexes, ui))
         ui = sorted(ui_all.items(), key=lambda kv: kv[1], reverse=True)[:3]
         first, second, third = ui[0][0], ui[1][0], ui[2][0]
-        print(first+second+third)
         ppu_pom = self.df_p.loc[(self.df_p[first] > 8.0) & ((self.df_p[second] > 6.0) | (self.df_p[third] > 6.0))]
         mpppu = ppu_pom.sort_values([first], ascending=False)
         return mpppu.index.values
 
+    def get_top_n(self, predictions, n=10):
+        top_n = defaultdict(list)
+        for uid, iid, true_r, est, _ in predictions:
+            top_n[uid].append((iid, est))
+
+        for uid, user_ratings in top_n.items():
+            user_ratings.sort(key=lambda x: x[1], reverse=True)
+            top_n[uid] = user_ratings[:n]
+
+        return top_n
+
+    def usp_(self, userID, type):
+        
+        # print(df.head())
+        if(type == 'p'):
+           df = pd.DataFrame(self.ratings_dict)
+        else:
+            df = pd.DataFrame(self.ratings_dict_u)
+        reader = Reader(rating_scale=(1, 5))
+        data = Dataset.load_from_df(df[list(df.columns)], reader)
+        trainset, testset = train_test_split(data, test_size=.25)
+
+        algo = SVD()
+
+        algo.fit(trainset)
+        predictions = algo.test(testset)
+        
+        top_n = self.get_top_n(predictions, n=5)
+
+        # Print the recommended items for each user
+        for uid, user_ratings in top_n.items():
+            if(uid == userID):
+                return [uid, [iid for (iid, _) in user_ratings]]
+
+        accuracy.rmse(predictions)
 
 
-rc = Recommender()
-rc.ppu(3)
+# rc = Recommender()
+# rc.usp_(3, 'u')

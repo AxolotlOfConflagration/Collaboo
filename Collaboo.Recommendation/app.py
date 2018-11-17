@@ -21,5 +21,35 @@ def ppu(user_id):
     json_data = json.dumps(input_)
     return json_data
 
+
+@app.route('/usp/u/<int:user_id>', methods=['GET'])
+def uspu(user_id):
+    l = []
+    while(len(l)<=3):
+        input_ = rc.usp_(user_id, 'u')
+        try:
+            l = input_[1]
+            if type(l) == int:
+                l = []
+        except TypeError:
+            input_ = rc.usp_(user_id, 'u')
+    json_data = json.dumps(input_)
+    return json_data
+
+@app.route('/usp/p/<int:user_id>', methods=['GET'])
+def uspp(user_id):
+    l = []
+    while(len(l)<=3):
+        input_ = rc.usp_(user_id, 'p')
+        try:
+            l = input_[1]
+            if type(l) == int:
+                l = []
+        except TypeError:
+            input_ = rc.usp_(user_id, 'p')
+    json_data = json.dumps(input_)
+    return json_data
+
+
 if __name__ == '__main__':
     app.run(debug=True)
