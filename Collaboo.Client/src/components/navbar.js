@@ -21,6 +21,9 @@ import { Link } from 'react-router-dom'
 const styles = theme => ({
   root: {
     width: '100%',
+    position: "fixed",
+    zIndex: "999",
+    top: 0
   },
   grow: {
     flexGrow: 1,
@@ -168,7 +171,9 @@ class Navbar extends React.Component {
         <AppBar position="static">
           <Toolbar>
             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              <Link to="/" className="brand-link">Collaboo</Link>
+              <Link to="/" className="brand-link">
+              <img src="/collaboo.svg" width="50" />
+              Collaboo</Link>
             </Typography>
             
             <div className={classes.grow} />
