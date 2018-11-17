@@ -8,7 +8,9 @@ namespace Collaboo.App.WebAPI.Helpers.AutoMapper
     {
         public AutoMapperProfile() 
         {
-            CreateMap<Project, ProjectDTO>();
+            CreateMap<Project, ProjectDTO>().ReverseMap();
+            CreateMap<ProjectRequirement, ProjectRequirementDTO>().ReverseMap();
+            CreateMap<Project, AddProjectDTO>().ReverseMap();
         }
     }
 }

@@ -6,26 +6,28 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Collaboo.App.WebAPI.Models;
 
 namespace Collaboo.App.WebAPI.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly ApplicationDbContext _conext;
+        private readonly ApplicationDbContext _context;
 
-        public ProjectService(ApplicationDbContext conext)
+        public ProjectService(ApplicationDbContext context)
         {
-            _conext = conext;
+            _context = context;
         }
 
-        public void CreateProject()
+        public async Task CreateProjectAsync(Project projectToAdd)
         {
-            throw new System.NotImplementedException();
+            _context.Projects.Add(projectToAdd);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<Project> GetProject(int projectId)
+        public async Task<Project> GetProjectAsync(int projectId)
         {
-            var project = await _conext.Projects
+            var project = await _context.Projects
                 .Include(p => p.ProjectMembers)
                 .Include(p => p.Requirements) 
                 .FirstOrDefaultAsync(p => p.Id == projectId);
@@ -39,7 +41,7 @@ namespace Collaboo.App.WebAPI.Services
 
         public IEnumerable<Project> GetUserProjects(int userId, bool onlyOwner = false)
         {
-            IQueryable<Project> projectForUser = _conext.Projects
+            IQueryable<Project> projectForUser = _context.Projects
                 .Include(p => p.Requirements)
                 .Include(p => p.ProjectMembers);
             
