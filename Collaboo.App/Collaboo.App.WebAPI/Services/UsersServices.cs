@@ -7,6 +7,7 @@ using Octokit;
 using Octokit.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Collaboo.App.WebAPI.Services
 {
@@ -21,6 +22,16 @@ namespace Collaboo.App.WebAPI.Services
             _skillsServices = skillsServices;
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task AddUserAsync(Entities.User user)
+        {
+            var dbUser = _context.Users.FirstOrDefault(u => u.GitHubId == user.GitHubId);
+            if(dbUser == null)
+            {
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task AddUserSkillAsync(UserSkills userSkill)

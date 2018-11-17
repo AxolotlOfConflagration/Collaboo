@@ -13,7 +13,8 @@ namespace Collaboo.App.WebAPI.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("Host=elmer.db.elephantsql.com;Database=zzvkyspj;Username=zzvkyspj;Password=BJmqMK84NkJ6eD97xXGzZBLmiZOB4Se8") ;
-        
+
+        public DbSet<User> Users { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<UserSkills> UserSkills { get; set; }
         public DbSet<Project> Projects { get; set; }
