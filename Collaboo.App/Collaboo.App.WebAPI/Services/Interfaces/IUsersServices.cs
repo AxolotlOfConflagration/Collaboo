@@ -1,4 +1,5 @@
-﻿using Collaboo.App.WebAPI.Models;
+﻿using Collaboo.App.WebAPI.Entities;
+using Collaboo.App.WebAPI.Models;
 using Octokit;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,8 @@ namespace Collaboo.App.WebAPI.Services.Interfaces
     {
         Task<UserDTO> GetAuthUserAsync(string login, Credentials gitCredentials);
         Task<UserDTO> GetUserAsync(string login);
+        Task AddUserSkillAsync(AddUserSkillDTO userSkill, int userId);
+
+        Task AddUserAsync(Entities.User user);
     }
 }

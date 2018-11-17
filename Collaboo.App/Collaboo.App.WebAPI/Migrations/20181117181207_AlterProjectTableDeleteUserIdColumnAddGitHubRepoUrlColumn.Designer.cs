@@ -3,15 +3,17 @@ using System;
 using Collaboo.App.WebAPI.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Collaboo.App.WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181117181207_AlterProjectTableDeleteUserIdColumnAddGitHubRepoUrlColumn")]
+    partial class AlterProjectTableDeleteUserIdColumnAddGitHubRepoUrlColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,20 +99,6 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("Collaboo.App.WebAPI.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("GitHubId");
-
-                    b.Property<string>("Login");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("Collaboo.App.WebAPI.Entities.UserFollowers", b =>
                 {
                     b.Property<int>("Id")
@@ -141,8 +129,6 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SkillId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserSkills");
                 });
@@ -180,11 +166,6 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.HasOne("Collaboo.App.WebAPI.Entities.Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Collaboo.App.WebAPI.Entities.User", "User")
-                        .WithMany("UserSkills")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
