@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Octokit;
 using Octokit.Internal;
+using System;
 using System.Threading.Tasks;
 
 namespace Collaboo.App.WebAPI.Controllers
@@ -21,23 +22,37 @@ namespace Collaboo.App.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDTO>> GetUser()
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var login = User.FindFirst(c => c.Type == "urn:github:login")?.Value;
-                var credentials = new Credentials(await HttpContext.GetTokenAsync("access_token"));
+                if (User.Identity.IsAuthenticated)
+                {
+                    var login = User.FindFirst(c => c.Type == "urn:github:login")?.Value;
+                    var credentials = new Credentials(await HttpContext.GetTokenAsync("access_token"));
 
-                return await _usersServices.GetAuthUserAsync(login, credentials);
+                    return await _usersServices.GetAuthUserAsync(login, credentials);
+                }
+                else
+                {
+                    return BadRequest("Authentication Exception");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return BadRequest("Authentication Exception");
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("{login}")]
         public async Task<ActionResult<UserDTO>> GetUser(string login)
         {
-            return await _usersServices.GetUserAsync(login);
+            try
+            {
+                return await _usersServices.GetUserAsync(login);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
