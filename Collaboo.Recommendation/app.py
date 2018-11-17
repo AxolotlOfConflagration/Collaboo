@@ -21,6 +21,7 @@ def ppu(user_id):
     json_data = json.dumps(input_)
     return json_data
 
+
 @app.route('/usp/u/<int:user_id>', methods=['GET'])
 def uspu(user_id):
     l = []
@@ -48,6 +49,7 @@ def uspp(user_id):
             input_ = rc.usp_(user_id, 'p')
     json_data = json.dumps(input_)
     return json_data
+
 
 if __name__ == '__main__':
     app.run(debug=True)

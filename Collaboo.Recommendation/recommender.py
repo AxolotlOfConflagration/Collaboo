@@ -4,6 +4,7 @@ from random import sample, randrange, shuffle
 from surprise import SVD, accuracy, Reader, Dataset, NormalPredictor, BaselineOnly
 from surprise.model_selection import cross_validate
 from surprise.model_selection import train_test_split
+from random import sample, randrange
 
 class Recommender:
     def __init__(self):
@@ -78,7 +79,6 @@ class Recommender:
         ui_all = dict(zip(ui_indexes, ui))
         ui = sorted(ui_all.items(), key=lambda kv: kv[1], reverse=True)[:3]
         first, second, third = ui[0][0], ui[1][0], ui[2][0]
-        # print(first+second+third)
         ppu_pom = self.df_p.loc[(self.df_p[first] > 8.0) & ((self.df_p[second] > 6.0) | (self.df_p[third] > 6.0))]
         mpppu = ppu_pom.sort_values([first], ascending=False)
         return mpppu.index.values
