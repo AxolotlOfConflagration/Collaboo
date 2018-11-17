@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Collaboo.App.WebAPI.DbContexts;
+using Collaboo.App.WebAPI.Services;
+using Collaboo.App.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +35,11 @@ namespace Collaboo.App.WebAPI
 
         public IConfiguration Configuration { get; }
 
+        public void Register(IServiceCollection services)
+        {
+            services.AddTransient<IUsersServices, UsersServices>();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,7 +47,9 @@ namespace Collaboo.App.WebAPI
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApplicationDbContext>()
                 .BuildServiceProvider();
-            
+
+            Register(services);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAuthentication(options =>
                 {
