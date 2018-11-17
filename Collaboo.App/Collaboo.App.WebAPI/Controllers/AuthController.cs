@@ -3,13 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Collaboo.App.WebAPI.Controllers
 {
-    [Route("api/login")]
     public class AuthController : Controller
     {
-        [HttpGet]
-        public IActionResult Login(string returnUrl = "http://www.google.com")
+        [HttpGet("api/login")]
+        public IActionResult Login(string returnUrl = "/api/register")
         {
             return Challenge(new AuthenticationProperties() { RedirectUri = returnUrl });
+        }
+
+        [HttpGet("api/register")]
+        public IActionResult RegisterUser()
+        {
+            return NoContent();
         }
     }
 }
