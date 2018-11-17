@@ -21,7 +21,7 @@ namespace Collaboo.App.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSkill(SkillDTO skill)
+        public async Task<IActionResult> AddSkill([FromBody] AddSkillDTO skill)
         {
             var dbSkill = _mapper.Map<Skill>(skill);
             await _skillsServices.AddSkill(dbSkill);
@@ -29,16 +29,16 @@ namespace Collaboo.App.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSkill(int id)
+        public IActionResult GetSkill(int id)
         {
-            var skill = await _skillsServices.GetSkill(id);
+            var skill = _skillsServices.GetSkill(id);
             return Ok(_mapper.Map<SkillDTO>(skill));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSkills()
+        public IActionResult GetSkills()
         {
-            var skills = await _skillsServices.GetSkills();
+            var skills = _skillsServices.GetSkills();
             return Ok(_mapper.Map<IEnumerable<SkillDTO>>(skills));
         }
     }

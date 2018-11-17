@@ -24,25 +24,25 @@ namespace Collaboo.App.WebAPI.Services
             return _context.SaveChangesAsync();
         }
 
-        public Task AddSkillForUser(UserSkills userSkill)
+        public async Task AddSkillForUser(UserSkills userSkill)
         {
             _context.UserSkills.Add(userSkill);
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Skill> GetSkill(int id)
+        public Skill GetSkill(int id)
         {
-            throw new NotImplementedException();
+            return _context.Skills.Where(s => s.Id == id).FirstOrDefault();
         }
 
-        public Task<IEnumerable<Skill>> GetSkills()
+        public IEnumerable<Skill> GetSkills()
         {
-            throw new NotImplementedException();
+            return _context.Skills;
         }
 
-        public Task<IEnumerable<UserSkills>> GetSkillsForUser(int id)
+        public IEnumerable<UserSkills> GetSkillsForUser(int id)
         {
-            throw new NotImplementedException();
+            return _context.UserSkills.Where(s => s.UserId == id);
         }
     }
 }
