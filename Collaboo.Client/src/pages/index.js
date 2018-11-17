@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../withRoot';
 import Navbar from '../components/navbar';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -32,6 +33,10 @@ class Index extends React.Component {
   render() {
     const { classes } = this.props;
     
+    const Index = () => <h2>Home</h2>;
+    const About = () => <h2>About</h2>;
+    const Users = () => <h2>Users</h2>;
+
     return (
       <div className={classes.root}>
         <Navbar />
@@ -40,11 +45,16 @@ class Index extends React.Component {
         <Grid item md={3}>
           menu
         </Grid>
-        <Grid item md={9}>
-          content
+          
+            <Router>
+            <Grid item md={9}>
+              <Route path="/" exact component={Index} />
+              <Route path="/about/" component={About} />
+              <Route path="/users/" component={Users} />
+              </Grid>
+            </Router>
         </Grid>
         
-      </Grid>
       </div>
     );
   }
