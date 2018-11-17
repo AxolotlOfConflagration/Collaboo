@@ -53,6 +53,8 @@ namespace Collaboo.App.WebAPI
 
             Register(services);
 
+            services.AddCors();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAuthentication(options =>
                 {
