@@ -19,6 +19,8 @@ namespace Collaboo.App.WebAPI.DbContexts
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectMember> ProjectMember { get; set; }
         public DbSet<ProjectRequirement> ProjectRequirments { get; set; }
+        public DbSet<UserFollowers> UserFollowers { get; set; }
+        public DbSet<Follower> Followers { get; set; }
     }
 
 }
