@@ -71,12 +71,12 @@ namespace Collaboo.App.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"{ex.Message} {ex.InnerException?.Message}");
             }
         }
 
         [HttpGet("{login}")]
-        public async Task<ActionResult<UserDTO>> GetUser(string login)
+        public async Task<ActionResult<UserDTO>> GetUserByLogin(string login)
         {
             try
             {
@@ -84,7 +84,20 @@ namespace Collaboo.App.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"{ex.Message} {ex.InnerException?.Message}");
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        {
+            try
+            {
+                return await _usersServices.GetUserAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message} {ex.InnerException?.Message}");
             }
         }
     }

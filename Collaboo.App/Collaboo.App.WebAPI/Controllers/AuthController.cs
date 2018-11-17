@@ -37,7 +37,7 @@ namespace Collaboo.App.WebAPI.Controllers
             };
 
             await _usersServices.AddUserAsync(user);
-            return Redirect("http://google.com");
+            return Redirect("http://localhost:3000/authorize");
         }
     }
 }

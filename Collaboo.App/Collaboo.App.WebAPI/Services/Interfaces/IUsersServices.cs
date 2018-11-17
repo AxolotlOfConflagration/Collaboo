@@ -12,6 +12,7 @@ namespace Collaboo.App.WebAPI.Services.Interfaces
     {
         Task<UserDTO> GetAuthUserAsync(string login, Credentials gitCredentials);
         Task<UserDTO> GetUserAsync(string login);
+        Task<UserDTO> GetUserAsync(int id);
         Task AddUserSkillAsync(AddUserSkillDTO userSkill, int userId);
 
         Task AddUserAsync(Entities.User user);
