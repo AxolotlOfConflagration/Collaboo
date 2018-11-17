@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace Collaboo.App.WebAPI.Models
 {
-    public class UserDTO
+    public class SkillDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string AvatarUrl { get; set; }
-
-        public IEnumerable<UserSkillDTO> Skills { get; set; }
+        public string SkillName { get; set; }
     }
 }
