@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Collaboo.App.WebAPI.Controllers
 {
+    [Route("")]
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
@@ -21,7 +22,7 @@ namespace Collaboo.App.WebAPI.Controllers
         [HttpGet("api/projects/{projectId}")]
         public async Task<IActionResult> GetProject(int projectId)
         {
-            var project = await _projectService.GetProject(projectId);
+            var project = await _projectService.GetProjectAsync(projectId);
             var projectDto = _mapper.Map<Project, ProjectDTO>(project);
             return Ok(projectDto);
         }
@@ -32,6 +33,15 @@ namespace Collaboo.App.WebAPI.Controllers
             var projects = _projectService.GetUserProjects(userId, onlyOwner);
 
             return Ok(projects);
+        }
+
+        [HttpPost("api/users/{userId}/projects")]
+        public async Task<IActionResult> AddProject([FromRoute] int userId, [FromBody] AddProjectDTO projectToAdd)
+        {
+            var project = _mapper.Map<AddProjectDTO, Project>(projectToAdd);
+            project.OwnerId = userId;
+            await _projectService.CreateProjectAsync(project);
+            return NoContent();
         }
     }
 }
