@@ -7,7 +7,7 @@ namespace Collaboo.App.WebAPI.Controllers
     public class AuthController : Controller
     {
         [HttpGet]
-        public IActionResult Login(string returnUrl = "/")
+        public IActionResult Login(string returnUrl = "http://www.google.com")
         {
             return Challenge(new AuthenticationProperties() { RedirectUri = returnUrl });
         }
