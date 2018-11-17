@@ -7,7 +7,7 @@ import Navbar from '../components/navbar';
 import Feed from '../components/feed/feed';
 import Sidebar from '../components/sidebar';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { CreateProject } from '../containers/create-project';
+import { CreateProject } from './create-project';
 import { Provider } from 'react-redux';
 import { store } from '../reducers/store';
 import classNames from 'classnames';
