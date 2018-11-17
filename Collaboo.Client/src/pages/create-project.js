@@ -36,12 +36,12 @@ const styles = theme => ({
 
 const skills = [
     {
-        id: 12,
+        id: 1,
         name: 'C#'
     },
     {
-        id: 8,
-        name: 'Rest API'
+        id: 2,
+        name: 'React'
     }
 ]
 
@@ -49,7 +49,7 @@ class CreateProject extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
+            projectName: "",
             description: "",
             requirements: []
         }
@@ -66,10 +66,10 @@ class CreateProject extends React.Component {
             console.log(levelElement);
 
             if(event.target.checked){
-                reqs.push({id: skill, rating: levelElement.value});
+                reqs.push({skillId: skill, rating: levelElement.value});
             } else {
                 reqs.forEach((req, index) => {
-                    if(req.id = skill) reqs.splice(index, 1);
+                    if(req.skillId = skill) reqs.splice(index, 1);
                 })
             }
             this.setState({
@@ -82,7 +82,7 @@ class CreateProject extends React.Component {
             let skillId = event.target.dataset.id;
 
             reqs.forEach((req, index) => {
-                if(req.id == skillId) reqs[index].rating = skillLevel;
+                if(req.skillId == skillId) reqs[index].rating = skillLevel;
             })
 
             this.setState({
@@ -113,8 +113,8 @@ class CreateProject extends React.Component {
                 <TextField
                     id="project-name"
                     label="Project Name"
-                    value={this.state.name}
-                    onChange={this.handleChange('name')}
+                    value={this.state.projectName}
+                    onChange={this.handleChange('projectName')}
                     margin="normal"
                     fullWidth
                     />
