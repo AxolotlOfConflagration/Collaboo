@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Collaboo.App.WebAPI.DbContexts;
 using Collaboo.App.WebAPI.Services;
 using Collaboo.App.WebAPI.Services.Interfaces;
@@ -93,6 +94,7 @@ namespace Collaboo.App.WebAPI
                         }
                     };
                 });
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
