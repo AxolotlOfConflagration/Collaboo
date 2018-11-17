@@ -60,8 +60,7 @@ namespace Collaboo.App.WebAPI.Controllers
                     //if (user.Id != id)
                     //    throw new Exception("Authentication Exception: User not authorize to change other user Id");
 
-                    var userSkill = _mapper.Map<UserSkills>(skill);
-                    await _usersServices.AddUserSkillAsync(userSkill);
+                    await _usersServices.AddUserSkillAsync(skill, id);
 
                     return NoContent();
                 }

@@ -14,6 +14,6 @@ namespace Collaboo.App.WebAPI.Services.Interfaces
         Skill GetSkill(int id);
         IEnumerable<UserSkills> GetSkillsForUser(int id);
         Task AddSkill(Skill skill);
-        Task AddSkillForUser(UserSkills userSkill);
+        Task AddSkillForUser(AddUserSkillDTO userSkillDto, int userId);
     }
 }

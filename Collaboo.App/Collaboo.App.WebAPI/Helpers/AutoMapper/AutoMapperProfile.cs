@@ -18,7 +18,7 @@ namespace Collaboo.App.WebAPI.Helpers.AutoMapper
             CreateMap<UserSkillDTO, UserSkills>()
                 .ForMember(target => target.Skill, map => map.MapFrom(src => new Skill { Id = src.SkillId, SkillName = src.SkillName }));
             CreateMap<AddUserSkillDTO, UserSkills>()
-                .ForMember(target => target.Skill, map => map.MapFrom(src => new Skill { Id = src.SkillId, SkillName = src.SkillName }));
+                .ForMember(target => target.Skill, map => map.Ignore());
         }
     }
 }

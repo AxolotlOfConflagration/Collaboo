@@ -34,9 +34,9 @@ namespace Collaboo.App.WebAPI.Services
             }
         }
 
-        public async Task AddUserSkillAsync(UserSkills userSkill)
+        public async Task AddUserSkillAsync(AddUserSkillDTO userSkill, int userId)
         {
-            await _skillsServices.AddSkillForUser(userSkill);
+            await _skillsServices.AddSkillForUser(userSkill, userId);
         }
 
         public async Task<UserDTO> GetAuthUserAsync(string login, Credentials gitCredentials)

@@ -37,7 +37,7 @@ namespace Collaboo.App.WebAPI.Controllers
             };
 
             await _usersServices.AddUserAsync(user);
-            return NoContent();
+            return Redirect("http://google.com");
         }
     }
 }
