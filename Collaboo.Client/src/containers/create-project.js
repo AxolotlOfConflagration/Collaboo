@@ -9,8 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom'
-
+import { createProject } from '../services';
+import Checkbox from '@material-ui/core/Checkbox';
 import { login } from '../actions/index';
 const styles = theme => ({
     root: {
@@ -58,10 +58,48 @@ class CreateProject extends React.Component {
     }
     
     handleChange = name => event => {
-        this.setState({
-        [name]: event.target.value,
-        });
+        if(name == 'requirements'){
+            let reqs = this.state.requirements;
+            let skill = event.target.value;
+
+            let levelElement = document.getElementById('requirementsLevel#' + skill)
+            console.log(levelElement);
+
+            if(event.target.checked){
+                reqs.push({id: skill, rating: levelElement.value});
+            } else {
+                reqs.forEach((req, index) => {
+                    if(req.id = skill) reqs.splice(index, 1);
+                })
+            }
+            this.setState({
+            requirements: reqs,
+            });
+            console.log(reqs);
+        } else if(name == 'requirementsLevel') {
+            let reqs = this.state.requirements;
+            let skillLevel = event.target.value;
+            let skillId = event.target.dataset.id;
+
+            reqs.forEach((req, index) => {
+                if(req.id == skillId) reqs[index].rating = skillLevel;
+            })
+
+            this.setState({
+            requirements: reqs,
+            });
+            console.log(reqs)
+        } else {
+            this.setState({
+            [name]: event.target.value,
+            });
+        }
     };
+    
+    handleSubmit = event => {
+        event.preventDefault();
+        createProject(this.state);
+    }
 
     render() {
         const { classes } = this.props;
@@ -70,8 +108,8 @@ class CreateProject extends React.Component {
                 <Typography component="h2" variant="h2" gutterBottom>
                 Create new project
                 </Typography>
-                <p>Only thing you need I an idea. Ideas can spark something big. We help you find people, that share your values and meet your needs. It's easier to do something big together!</p>
-                <form noValidate autoComplete="off">
+                <p>Only thing you need is an idea. Idea can spark something big. We can help you find people, that share your values and meet your needs. It's easier to do something big together!</p>
+                <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                 <TextField
                     id="project-name"
                     label="Project Name"
@@ -82,9 +120,9 @@ class CreateProject extends React.Component {
                     />
                 <TextField
                     id="project-description"
-                    label="Project Descriptiom"
-                    value={this.state.name}
-                    onChange={this.handleChange('name')}
+                    label="Project Description"
+                    value={this.state.description}
+                    onChange={this.handleChange('description')}
                     margin="normal"
                     multiline
                     rowsMax="4"
@@ -94,31 +132,24 @@ class CreateProject extends React.Component {
                     <br />  
 
                     <p>Select skills that users should have to be able to participate in this project</p>
-                    <FormControl fullWidth>
-                      <InputLabel htmlFor="project-requirements">Required skills</InputLabel>
-                    <Select
-                        multiple
-                        id="project-requirements"
-                        value={this.state.requirements}
-                        onChange={this.handleChange('requirements')}
-                        input={<Input id="select-multiple-chip" />}
-                        fullWidth
-                        margin="normal"
-                        renderValue={selected => (
-                        <div>
-                            {selected.map(value => (
-                            <Chip key={value} label={value} />
-                            ))}
-                        </div>
-                        )}
-                    >
+                    <div className="skills-selector">
                         {skills.map(skill => (
-                        <MenuItem key={skill.id} value={skill.name}>
-                            {skill.name}
-                        </MenuItem>
+                            <div>
+                            {skill.name}<Checkbox onChange={this.handleChange('requirements')} name={"skill#" + skill.id} value={skill.id} />
+                            <select
+                                onChange={this.handleChange('requirementsLevel')}
+                                data-id={skill.id}
+                                id={"requirementsLevel#" + skill.id}
+                            >
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            </div>
                         ))}
-                    </Select>
-                    </FormControl>
+                    </div>
                     <br />
                     <br /> 
                     <br />

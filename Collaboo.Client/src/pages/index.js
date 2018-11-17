@@ -15,6 +15,7 @@ import classNames from 'classnames';
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    paddingTop: "64px"
   },
   container: {
     width: '95%',
