@@ -1,6 +1,7 @@
 using Bogus;
 using Collaboo.App.WebAPI.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Collaboo.App.WebAPI.DbContexts
@@ -50,13 +51,15 @@ namespace Collaboo.App.WebAPI.DbContexts
             int userSkillId = userSkillIdBegin;
             for (int id = userIdBegin; id <= userIdBegin + userIdCount; id++)
             {
-                for (int j = 0; j < faker.Random.Int(0, 5); j++)
+                var list = new List<UserSkills>();
+
+                //for (int j = 0; j < faker.Random.Int(0, 5); j++)
                 {
                     modelBuilder.Entity<UserSkills>().HasData(new UserSkills
                     {
                         Id = userSkillId,
-                        Rating = faker.Random.Int(0, 5),
-                        SkillId = faker.Random.Int(1, skills.Length+1),
+                        Rating = faker.Random.Int(1, 5),
+                        SkillId = faker.Random.Int(1, skills.Length-1),
                         UserId = id
                     });
                     userSkillId++;
@@ -77,13 +80,13 @@ namespace Collaboo.App.WebAPI.DbContexts
             int projectRequirementsId = projectRequirementsIdBegin;
             for (int id = projectIdBegin; id <= projectIdBegin + projectIdCount; id++)
             {
-                for (int i = 0; i < faker.Random.Int(0, 5); i++)
+                //for (int i = 0; i < faker.Random.Int(0, 5); i++)
                 {
                     modelBuilder.Entity<ProjectRequirement>().HasData(new ProjectRequirement
                     {
                         Id = projectRequirementsId,
                         Rating = faker.Random.Int(1, 5),
-                        SkillId = faker.Random.Int(1, skills.Length)
+                        SkillId = faker.Random.Int(1, skills.Length - 1)
                     });
 
                     projectRequirementsId++;
