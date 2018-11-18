@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Collaboo.App.WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181117220816_AlterUserAddAvatar")]
-    partial class AlterUserAddAvatar
+    [Migration("20181118035244_SomeMigrations")]
+    partial class SomeMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,6 +63,8 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProjectMember");
                 });
@@ -156,6 +158,11 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.HasOne("Collaboo.App.WebAPI.Entities.Project", "Project")
                         .WithMany("ProjectMembers")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Collaboo.App.WebAPI.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

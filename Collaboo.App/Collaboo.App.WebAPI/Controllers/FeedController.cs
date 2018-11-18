@@ -23,7 +23,7 @@ namespace Collaboo.App.WebAPI.Controllers
             _projectService = projectService;
         }
 
-        [HttpGet("api/feed")]
+        [HttpGet("api/users/feed")]
         public async Task<IActionResult> GetFeed(int userId)
         {
             var recommendations = await _recommendationClient.RecomendedProjectsForUser(userId);
