@@ -25,16 +25,17 @@ namespace Collaboo.App.WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task AddUserAsync(Entities.User user)
+        public async Task<int> AddUserAsync(Entities.User user)
         {
             var dbUser = _context.Users.FirstOrDefault(u => u.GitHubId == user.GitHubId);
             if(dbUser == null)
             {
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
+                return user.Id;
             }
+            return dbUser.Id;
         }
-
         public async Task AddUserSkillAsync(AddUserSkillDTO userSkill, int userId)
         {
             await _skillsServices.AddSkillForUser(userSkill, userId);
