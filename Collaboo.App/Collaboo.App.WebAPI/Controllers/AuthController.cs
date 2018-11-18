@@ -36,8 +36,8 @@ namespace Collaboo.App.WebAPI.Controllers
                 Login = gitUser.Login,
             };
 
-            await _usersServices.AddUserAsync(user);
-            return Redirect("http://google.com");
+            var userId = await _usersServices.AddUserAsync(user);
+            return Redirect($"http://localhost:3000/authorize?id={userId}");
         }
     }
 }

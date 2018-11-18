@@ -1,0 +1,4 @@
+
+namespace Collaboo.App.GitHub
+{
+}

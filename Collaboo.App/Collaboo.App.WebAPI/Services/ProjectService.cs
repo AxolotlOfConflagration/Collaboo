@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Collaboo.App.WebAPI.Models;
+using System.Collections;
 
 namespace Collaboo.App.WebAPI.Services
 {
@@ -77,6 +78,51 @@ namespace Collaboo.App.WebAPI.Services
             if(!String.IsNullOrEmpty(projectToUpdate.GitHubRepoUrl))
             {
                 project.GitHubRepoUrl = projectToUpdate.GitHubRepoUrl;
+            }
+        }
+
+        public async Task AddUserToProject(int projectId, int userId)
+        {
+            try
+            {
+                var project = await GetProjectAsync(projectId);
+                var user = _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if(user == null)
+                {
+                    throw new Exception("User doesn't exception");
+                }
+
+                project.ProjectMembers.Add(new ProjectMember 
+                {
+                    ProjectId = project.Id,
+                    UserId = user.Id
+                });
+
+                await _context.SaveChangesAsync();
+            } 
+            catch (Exception)
+            {
+               throw; 
+            }
+        }
+
+        public async Task<IEnumerable<User>> GetUsersFromProjectAsync(int projectId)
+        {
+            try
+            {
+                var project = await GetProjectAsync(projectId);
+                var users = _context.ProjectMember
+                    .Include(p => p.User)
+                    .Where(p => p.ProjectId == projectId)
+                    .Select(p => p.User)
+                    .AsEnumerable();
+                
+                return users;
+            }
+            catch(Exception)
+            {
+                throw;
             }
         }
     }

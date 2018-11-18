@@ -24,6 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Collaboo.App.WebAPI
 {
@@ -98,6 +99,16 @@ namespace Collaboo.App.WebAPI
                         }
                     };
                 });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info()
+                {
+                    Version = "v1",
+                    Title = "BookMeMobi API"
+                });
+            });
+
             services.AddAutoMapper();
         }
 
@@ -117,6 +128,9 @@ namespace Collaboo.App.WebAPI
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Collaboo"));
         }
     }
 }

@@ -8,6 +8,7 @@ using Octokit.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Collaboo.App.WebAPI.Services
 {
@@ -24,16 +25,17 @@ namespace Collaboo.App.WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task AddUserAsync(Entities.User user)
+        public async Task<int> AddUserAsync(Entities.User user)
         {
             var dbUser = _context.Users.FirstOrDefault(u => u.GitHubId == user.GitHubId);
             if(dbUser == null)
             {
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
+                return user.Id;
             }
+            return dbUser.Id;
         }
-
         public async Task AddUserSkillAsync(AddUserSkillDTO userSkill, int userId)
         {
             await _skillsServices.AddSkillForUser(userSkill, userId);
@@ -41,38 +43,36 @@ namespace Collaboo.App.WebAPI.Services
 
         public async Task<UserDTO> GetAuthUserAsync(string login, Credentials gitCredentials)
         {
-            var github = new GitHubClient(
-                new ProductHeaderValue("AspNetCoreGitHubAuth"),
-                new InMemoryCredentialStore(gitCredentials));
-            var gitUser = await github.User.Get(login);
-            var gitSkills = _skillsServices.GetSkillsForUser(gitUser.Id);
-            var skills = Mapper.Map<IEnumerable<UserSkillDTO>>(gitSkills);
+            var dbUser = await _context.Users
+                .Include(u => u.UserSkills)
+                .ThenInclude(us => us.Skill)
+                .FirstOrDefaultAsync(u => u.Login == login);
 
-            var user = new UserDTO
-            {
-                AvatarUrl = gitUser.AvatarUrl,
-                Id = gitUser.Id,
-                Name = gitUser.Name,
-                Skills = skills
-            };
+            var user = _mapper.Map<UserDTO>(dbUser);
 
             return user;
         }
 
         public async Task<UserDTO> GetUserAsync(string login)
         {
-            var github = new GitHubClient(new ProductHeaderValue("AspNetCoreGitHubAuth"));
-            var gitUser = await github.User.Get(login);
-            var gitSkills = _skillsServices.GetSkillsForUser(gitUser.Id);
-            var skills = _mapper.Map<IEnumerable<UserSkillDTO>>(gitSkills);
+            var dbUser = await _context.Users
+                .Include(u => u.UserSkills)
+                .ThenInclude(us => us.Skill)
+                .FirstOrDefaultAsync(u => u.Login == login);
 
-            var user = new UserDTO
-            {
-                AvatarUrl = gitUser.AvatarUrl,
-                Id = gitUser.Id,
-                Name = gitUser.Name,
-                Skills = skills
-            };
+            var user = _mapper.Map<UserDTO>(dbUser);
+
+            return user;
+        }
+
+        public async Task<UserDTO> GetUserAsync(int id)
+        {
+            var dbUser = await _context.Users
+                .Include(u => u.UserSkills)
+                .ThenInclude(us => us.Skill)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            var user = _mapper.Map<UserDTO>(dbUser);
 
             return user;
         }
