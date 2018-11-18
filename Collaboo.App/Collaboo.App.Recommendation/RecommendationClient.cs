@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Collaboo.App.Recommendation
 {
-    public class RecommendationClient
+    public class RecommendationClient : IRecommendationClient
     {
         private readonly Uri _recomendationServerUri = new Uri(@"https://gentle-bastion-31804.herokuapp.com");
         private readonly Dictionary<string, string> _endpoints;
