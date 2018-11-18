@@ -14,6 +14,11 @@ namespace Collaboo.App.WebAPI.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.HasSequence<int>("Id")
+                .StartsAt(1000)
+                .IncrementsBy(5);
+                
             var faker = new Faker();
 
             var skills = new[] { "C#", "Haskel", "Swift", "Java", "R", "PHP", "Assembly", "Go", "Ruby", "Perl", "MS-SQL", "JavaScript", "TypeScript", "C", "C++", "Python", "PL/SQL", "MongoDb", "Lisp", "Prolog", "D", "Rust", "Android", ".Net" };
