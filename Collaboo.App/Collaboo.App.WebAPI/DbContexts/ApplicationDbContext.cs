@@ -71,7 +71,7 @@ namespace Collaboo.App.WebAPI.DbContexts
                 modelBuilder.Entity<Project>().HasData(new Project
                 {
                     Id = id,
-                    Description = faker.Lorem.Sentences(faker.Random.Int(5, 20)),
+                    Description = faker.Lorem.Sentences(faker.Random.Int(5, 20), ". "),
                     OwnerId = faker.Random.Int(1, 100),
                     ProjectName = faker.Internet.DomainName()
                 });
