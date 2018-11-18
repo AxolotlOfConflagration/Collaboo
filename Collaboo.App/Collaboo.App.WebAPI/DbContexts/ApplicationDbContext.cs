@@ -34,12 +34,11 @@ namespace Collaboo.App.WebAPI.DbContexts
                     {
                         Id = i,
                         Login = faker.Internet.UserName()
-                    }
-                    );
+                    });
             }
 
             int userSkillId = 1;
-            foreach (var user in Users)
+            for (int id = 1; id < 101; id++)
             {
                 for (int i = 0; i < faker.Random.Int(0, 5); i++)
                 {
@@ -47,8 +46,8 @@ namespace Collaboo.App.WebAPI.DbContexts
                     {
                         Id = userSkillId,
                         Rating = faker.Random.Int(0, 5),
-                        SkillId = faker.PickRandom(Skills, 1).FirstOrDefault().Id,
-                        UserId = user.Id
+                        SkillId = faker.Random.Int(1, skills.Length+1),
+                        UserId = id
                     });
                     userSkillId++;
                 }
@@ -60,13 +59,13 @@ namespace Collaboo.App.WebAPI.DbContexts
                 {
                     Id = i,
                     Description = faker.Lorem.Sentences(faker.Random.Int(5, 20)),
-                    OwnerId = faker.PickRandom(Users, 1).FirstOrDefault().Id,
+                    OwnerId = faker.Random.Int(1, 100),
                     ProjectName = faker.Internet.DomainName()
                 });
             }
 
             int projectRequirementsId = 1;
-            foreach (var proj in Projects)
+            for (int id = 1; id < 21; id++)
             {
                 for (int i = 0; i < faker.Random.Int(0, 5); i++)
                 {
@@ -74,7 +73,7 @@ namespace Collaboo.App.WebAPI.DbContexts
                     {
                         Id = projectRequirementsId,
                         Rating = faker.Random.Int(1, 5),
-                        SkillId = faker.PickRandom(Skills, 1).FirstOrDefault().Id
+                        SkillId = faker.Random.Int(1, skills.Length)
                     });
 
                     projectRequirementsId++;
