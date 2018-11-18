@@ -1,4 +1,0 @@
-
-namespace Collaboo.App.GitHub
-{
-}

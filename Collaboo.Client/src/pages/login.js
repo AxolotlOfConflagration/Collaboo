@@ -28,7 +28,7 @@ class Login extends React.Component {
     }
 
     login = () => {
-        window.location.href = 'https://collabooappwebapi20181117101038.azurewebsites.net/api/login';
+        window.location.href = 'http://localhost:5001/api/login';
     }
     
     render() {

@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:5000/'
+const apiUrl = 'http://localhost:5001/api/'
 
 export const createProject = function(project) {
     let user = JSON.parse(localStorage.getItem('user'));
@@ -29,6 +29,7 @@ export const getUser = function(id) {
     return fetch(apiUrl + 'users/' + id)
     .then(handleResponse)
     .then(data => {
+        console.log('bla  ',data)
         return data;
     })
 

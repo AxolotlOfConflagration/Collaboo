@@ -26,14 +26,18 @@ class Feed extends React.Component {
 
   getProjects(){
     this.setState({projects: getFeed()});
-    // getFeed().then(data => {
-    //   console.log(data)
-    //   this.setState({projects: data});
-    // })
+  }
+
+  refreshFeed(){
+    this.getProjects();
   }
 
   componentDidMount(){
     this.getProjects();
+    // getFeed().then(data => {
+    //   console.log("DATA: ", data)
+    //   this.setState({projects: data});
+    // })
   }
 
   render() {
@@ -47,12 +51,13 @@ class Feed extends React.Component {
         Your feed
         </Typography>
         
-        <Typography component="p" variant="p" gutterBottom>
+        <Typography component="p" gutterBottom>
           This is main the most important place in Collaboo. You can see here <strong>recommended projects, recent activities in repos, updates from projects and new announcements</strong>.
         </Typography>
         <br /><hr /><br />
+        <p onClick={this.refreshFeed}>Refresh feed</p>
         {projects &&
-          <div>{projects.map((project, index) => 
+          <div>{projects.map((project) => 
             <div>
           <CardDefault 
             text={project.description}
@@ -64,7 +69,7 @@ class Feed extends React.Component {
         )}
           </div>
         }
-        <Typography component="p" variant="p" gutterBottom className={classes.center}>
+        <Typography component="p" gutterBottom className={classes.center}>
           This is the end of your feed :)
         </Typography>
       </div>
