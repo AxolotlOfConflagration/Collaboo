@@ -11,11 +11,13 @@ namespace Collaboo.App.WebAPI.Controllers
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
+        private readonly IGitHubService _gitHubService;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectService projectService, IMapper mapper)
+        public ProjectsController(IProjectService projectService, IGitHubService gitHubService, IMapper mapper)
         {
             _projectService = projectService;
+            _gitHubService = gitHubService;
             _mapper = mapper;
         }
 
@@ -51,6 +53,13 @@ namespace Collaboo.App.WebAPI.Controllers
 
             return Ok(users);
         }
+
+        [HttpGet("api/projects/{projectId}/commits")]
+        public async Task<IActionResult> GetCommitsFromProjects([FromRoute] int projectId)
+        {
+            var commits = await _gitHubService.GetCommitsForRepo(projectId);
+            return Ok(commits);
+        }
         
         [HttpPost("api/projects/{projectId}")]
         public async Task<IActionResult> AddUsersToProject([FromRoute] int projectId, [FromBody] int userId)
@@ -65,5 +74,6 @@ namespace Collaboo.App.WebAPI.Controllers
             await _projectService.UpdateProjectAsync(projectToUpdate, projectId);
             return NoContent(); 
         }
+
     }
 }
