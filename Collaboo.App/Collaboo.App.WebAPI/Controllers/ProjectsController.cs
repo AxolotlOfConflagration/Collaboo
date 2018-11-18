@@ -44,6 +44,21 @@ namespace Collaboo.App.WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet("api/projects/{projectId}/users")]
+        public async Task<IActionResult> GetUsersFromProject([FromRoute] int projectId)
+        {
+            var users = await _projectService.GetUsersFromProjectAsync(projectId);
+
+            return Ok(users);
+        }
+        
+        [HttpPost("api/projects/{projectId}")]
+        public async Task<IActionResult> AddUsersToProject([FromRoute] int projectId, [FromBody] int userId)
+        {
+            await _projectService.AddUserToProject(projectId, userId);
+            return NoContent();
+        }
+
         [HttpPut("api/users/{userId}/projects/{projectId}")]
         public async Task<IActionResult> UpdateProject([FromRoute] int userId, [FromRoute] int projectId, [FromBody] UpdateProjectDTO projectToUpdate)
         {
