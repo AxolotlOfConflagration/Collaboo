@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Collaboo.App.Recommendation;
 using Collaboo.App.WebAPI.DbContexts;
 using Collaboo.App.WebAPI.Services;
 using Collaboo.App.WebAPI.Services.Interfaces;
@@ -42,6 +43,7 @@ namespace Collaboo.App.WebAPI
             services.AddTransient<IUsersServices, UsersServices>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<ISkillsServices, SkillsServices>();
+            services.AddTransient<IRecommendationClient, RecommendationClient>(); 
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

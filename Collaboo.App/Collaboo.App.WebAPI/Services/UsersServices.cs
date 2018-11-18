@@ -52,7 +52,7 @@ namespace Collaboo.App.WebAPI.Services
             {
                 AvatarUrl = gitUser.AvatarUrl,
                 Id = gitUser.Id,
-                Name = gitUser.Name,
+                Login = gitUser.Name,
                 Skills = skills
             };
 
@@ -70,7 +70,7 @@ namespace Collaboo.App.WebAPI.Services
             {
                 AvatarUrl = gitUser.AvatarUrl,
                 Id = gitUser.Id,
-                Name = gitUser.Name,
+                Login = gitUser.Name,
                 Skills = skills
             };
 

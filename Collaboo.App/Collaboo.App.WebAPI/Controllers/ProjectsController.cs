@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Collaboo.App.Recommendation;
 using Collaboo.App.WebAPI.Entities;
 using Collaboo.App.WebAPI.Models;
 using Collaboo.App.WebAPI.Services.Interfaces;
@@ -12,10 +13,12 @@ namespace Collaboo.App.WebAPI.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
-
-        public ProjectsController(IProjectService projectService, IMapper mapper)
+        private readonly IRecommendationClient _recommendationClient;
+        
+        public ProjectsController(IProjectService projectService, IRecommendationClient recommendationClient, IMapper mapper)
         {
             _projectService = projectService;
+            _recommendationClient = recommendationClient;
             _mapper = mapper;
         }
 
@@ -33,6 +36,13 @@ namespace Collaboo.App.WebAPI.Controllers
             var projects = _projectService.GetUserProjects(userId, onlyOwner);
 
             return Ok(projects);
+        }
+
+        [HttpGet("api/project/{projectId}/recommendation")]
+        public async Task<IActionResult> GetRecommendationsForProject(int projectId)
+        {
+            var recommendedUsersForProject = await _recommendationClient.RecomendedUsersForProject(projectId);
+            return NoContent();
         }
 
         [HttpPost("api/users/{userId}/projects")]
