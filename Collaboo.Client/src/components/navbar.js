@@ -178,7 +178,14 @@ class Navbar extends React.Component {
             
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              
+            <MenuItem>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <p>Invitations</p>
+        </MenuItem>&nbsp;&nbsp;&nbsp;
                 <Button component={Link} to="/new-project" variant="contained" size="medium" color="secondary" className={classes.button}>
                 Create project
                 </Button>

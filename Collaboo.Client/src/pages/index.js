@@ -9,9 +9,11 @@ import Sidebar from '../components/sidebar';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { CreateProject } from './create-project';
 import { Login } from './login';
+import { Project } from './project';
 import { Provider } from 'react-redux';
 import { store } from '../reducers/store';
 import { getUser } from '../services';
+import Chip from '@material-ui/core/Chip';
 
 const styles = theme => ({
   root: {
@@ -34,6 +36,15 @@ const styles = theme => ({
     height: 120,
     margin: "auto",
   },
+  chip: {
+    margin: "3px",
+    backgroundColor: "#ff6e40",
+  },
+  rightSide: {
+      textAlign: "center",
+      position: "sticky",
+      top: "116px"
+  },
 });
 
 class Index extends React.Component {
@@ -41,10 +52,6 @@ class Index extends React.Component {
     open: false,
   };
 
-  componentDidMount(){
-    let user = getUser();
-    if(!user) console.log(user);
-  }
 
   handleClose = () => {
     this.setState({
@@ -104,10 +111,49 @@ class Index extends React.Component {
               <Route path="/" exact component={Feed} />
               <Route path="/new-project" component={CreateProject} />
               <Route path="/login" component={Login} />
+              <Route path="/project/:id" component={Project} />
             </Grid>
             <Grid item md={3}> 
             {loggedIn &&
-              <p>Users activity or sth</p>
+              <div className={classes.rightSide}>
+              <h4>Most popular technologies right now</h4>
+              
+              <Chip
+                label="C#"
+                className={classes.chip}
+                component="a"
+                href="#chip"
+                clickable
+              />
+              <Chip
+                label="PHP"
+                className={classes.chip}
+                component="a"
+                href="#chip"
+                clickable
+              />
+              <Chip
+                label="Rest API"
+                className={classes.chip}
+                component="a"
+                href="#chip"
+                clickable
+              />
+              <Chip
+                label="JavaScript"
+                className={classes.chip}
+                component="a"
+                href="#chip"
+                clickable
+              />
+              <Chip
+                label="React.js"
+                className={classes.chip}
+                component="a"
+                href="#chip"
+                clickable
+              />
+              </div>
             }
             </Grid>
         </Grid>

@@ -2,12 +2,6 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { createProject } from '../services';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -51,7 +45,8 @@ class CreateProject extends React.Component {
         this.state = {
             projectName: "",
             description: "",
-            requirements: []
+            requirements: [],
+            gitHubRepoUrl: ""
         }
         // reset login status
         this.props.dispatch(login());
@@ -115,6 +110,14 @@ class CreateProject extends React.Component {
                     label="Project Name"
                     value={this.state.projectName}
                     onChange={this.handleChange('projectName')}
+                    margin="normal"
+                    fullWidth
+                    />
+                <TextField
+                    id="github-repo-url"
+                    label="GitHub repository URL (optional)"
+                    value={this.state.gitHubRepoUrl}
+                    onChange={this.handleChange('gitHubRepoUrl')}
                     margin="normal"
                     fullWidth
                     />

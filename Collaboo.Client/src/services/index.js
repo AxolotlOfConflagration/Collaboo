@@ -1,9 +1,7 @@
 const apiUrl = 'https://collabooappwebapi20181117101038.azurewebsites.net/api/'
 
-
-
-
 export const createProject = function(project) {
+    let user = JSON.parse(localStorage.getItem('user'));
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -11,7 +9,7 @@ export const createProject = function(project) {
         },
         body: JSON.stringify(project)
     };
-    fetch(apiUrl + 'users/3/projects', requestOptions)
+    fetch(apiUrl + 'users/' + user.id + '/projects', requestOptions)
     .then((response) => {
         return response;
     });
@@ -27,12 +25,44 @@ export const login = function() {
 
 }
 
-export const getUser = function(id) {   
+export const getUser = function(id) {
     return fetch(apiUrl + 'users/' + id)
     .then(handleResponse)
     .then(data => {
         return data;
     })
+
+}
+
+export const getFeed = function(id) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    return [
+        {
+            projectName: "Test 1",
+            id: 1,
+            description: "Testowy opis"
+        },
+        {
+            projectName: "Test 2",
+            id: 2,
+            description: "Testowy opis"
+        },
+        {
+            projectName: "Test 3",
+            id: 3,
+            description: "Testowy opis"
+        },
+        {
+            projectName: "Test 4",
+            id: 4,
+            description: "Testowy opis"
+        },
+    ]
+    // return fetch(apiUrl + 'users/' + user.id + '/feed')
+    // .then(handleResponse)
+    // .then(data => {
+    //     return data;
+    // })
 
 }
 
@@ -46,6 +76,42 @@ export const getProjects = function() {
     return data;
     })
 
+}
+
+export const getProjectUsers = function(projectId) {
+
+    return fetch(apiUrl + 'projects/' + projectId + '/users')
+    .then(handleResponse)
+    .then(data => {
+    return data;
+    })
+
+}
+
+
+export const getProjectCommits = function(projectId) {
+
+    return fetch(apiUrl + 'projects/' + projectId + '/commits')
+    .then(handleResponse)
+    .then(data => {
+    return data;
+    })
+
+}
+
+export const inviteUserToProject = function(userName, projectId) {
+    let user = JSON.parse(localStorage.getItem('user'));
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({userName})
+    };
+    fetch(apiUrl + 'projects/' + projectId, requestOptions)
+    .then((response) => {
+        return response;
+    });
 }
 
 function handleResponse(response) {

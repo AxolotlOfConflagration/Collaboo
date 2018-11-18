@@ -35,8 +35,10 @@ class Login extends React.Component {
         const { classes } = this.props;
         return (
             <div className="Login">
+                You can log in with your GitHub account :) <br /><br /><br />
                 <Button  variant="contained" size="medium" color="secondary" onClick={this.login}>
-                Login
+                <img src="/Octocat.png" width="50" />
+                &nbsp;&nbsp;Login with github
                 </Button>
             </div>
         );
