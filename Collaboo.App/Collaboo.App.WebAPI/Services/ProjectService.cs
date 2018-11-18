@@ -25,7 +25,6 @@ namespace Collaboo.App.WebAPI.Services
             _context.Projects.Add(projectToAdd);
             await _context.SaveChangesAsync();
         }
-
         public async Task<Project> GetProjectAsync(int projectId)
         {
             var project = await _context.Projects
@@ -123,6 +122,32 @@ namespace Collaboo.App.WebAPI.Services
             catch(Exception)
             {
                 throw;
+            }
+        }
+
+        public async Task AddUserToProject(int projectId, string login)
+        {
+            try
+            {
+                var project = await GetProjectAsync(projectId);
+                var user = _context.Users.FirstOrDefaultAsync(u => u.Login == login);
+
+                if(user == null)
+                {
+                    throw new Exception("User doesn't exception");
+                }
+
+                project.ProjectMembers.Add(new ProjectMember 
+                {
+                    ProjectId = project.Id,
+                    UserId = user.Id
+                });
+
+                await _context.SaveChangesAsync();
+            } 
+            catch (Exception)
+            {
+               throw; 
             }
         }
     }

@@ -62,6 +62,8 @@ namespace Collaboo.App.WebAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("ProjectMember");
                 });
 
@@ -154,6 +156,11 @@ namespace Collaboo.App.WebAPI.Migrations
                     b.HasOne("Collaboo.App.WebAPI.Entities.Project", "Project")
                         .WithMany("ProjectMembers")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Collaboo.App.WebAPI.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Collaboo.App.Recommendation;
@@ -13,13 +14,15 @@ namespace Collaboo.App.WebAPI.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IGitHubService _gitHubService;
+        private readonly IUsersServices _usersServices;
         private readonly IMapper _mapper;
         private readonly IRecommendationClient _recommendationClient;
 
-        public ProjectsController(IProjectService projectService, IRecommendationClient recommendationClient, IGitHubService gitHubService, IMapper mapper)
+        public ProjectsController(IProjectService projectService, IRecommendationClient recommendationClient, IGitHubService gitHubService, IMapper mapper, IUsersServices usersServices)
         {
             _projectService = projectService;
             _recommendationClient = recommendationClient;
+            _usersServices = usersServices;
             _gitHubService = gitHubService;
             _mapper = mapper;
         }
@@ -40,11 +43,19 @@ namespace Collaboo.App.WebAPI.Controllers
             return Ok(projects);
         }
 
-        [HttpGet("api/project/{projectId}/recommendation")]
+        [HttpGet("api/projects/{projectId}/recommendation")]
         public async Task<IActionResult> GetRecommendationsForProject(int projectId)
         {
             var recommendedUsersForProject = await _recommendationClient.RecomendedUsersForProject(projectId);
-            return NoContent();
+            IList<UserDTO> recommendations = new List<UserDTO>();
+
+            foreach (var recommendationID in recommendedUsersForProject)
+            {
+                var user = await _usersServices.GetUserAsync(recommendationID);
+                recommendations.Add(user);
+            }
+
+            return Ok(recommendations);
         }
 
         [HttpPost("api/users/{userId}/projects")]
@@ -75,6 +86,13 @@ namespace Collaboo.App.WebAPI.Controllers
         public async Task<IActionResult> AddUsersToProject([FromRoute] int projectId, [FromBody] int userId)
         {
             await _projectService.AddUserToProject(projectId, userId);
+            return NoContent();
+        }
+
+        [HttpPost("api/projects/{projectId}")]
+        public async Task<IActionResult> AddUsersToProject([FromRoute] int projectId, [FromBody] string login)
+        {
+            await _projectService.AddUserToProject(projectId, login);
             return NoContent();
         }
 
