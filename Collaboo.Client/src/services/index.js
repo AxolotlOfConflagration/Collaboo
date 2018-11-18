@@ -1,4 +1,4 @@
-const apiUrl = 'https://collabooappwebapi20181117101038.azurewebsites.net/api/'
+const apiUrl = 'http://localhost:5000/'
 
 export const createProject = function(project) {
     let user = JSON.parse(localStorage.getItem('user'));
