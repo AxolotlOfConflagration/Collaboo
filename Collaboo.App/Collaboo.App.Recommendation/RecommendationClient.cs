@@ -2,6 +2,7 @@ using Collaboo.App.Recommendation.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Collaboo.App.Recommendation
 {
@@ -12,7 +13,7 @@ namespace Collaboo.App.Recommendation
 
         public string MostPopularLanguagesEndpoint { get; } = "mpl";
         public string ProjectPerUserEndpoint { get; } = "ppu";
-        public string ProjcetsForUserEndpoint { get; } = "pfu";
+        public string ProjectsForUserEndpoint { get; } = "pfu";
         public string UserForProjcetsEndpoint { get; } = "ufp";
 
         public RecommendationClient()
@@ -21,24 +22,54 @@ namespace Collaboo.App.Recommendation
             {
                 {MostPopularLanguagesEndpoint, "mpl" },
                 {ProjectPerUserEndpoint, "ppu/{0}" },
-                {ProjcetsForUserEndpoint, "usp/u/{0}" },
+                {ProjectsForUserEndpoint, "usp/u/{0}" },
                 {UserForProjcetsEndpoint, "usp/p/{0}" }
             };
         }
 
         private string GetEndpoint(string endpointName, params object[] args)
         {
-            return string.Format($"{_recomendationServerUri}/{_endpoints[endpointName]}", args);
+            return string.Format($"{_recomendationServerUri}{_endpoints[endpointName]}", args);
         }
 
-        public async void MostPopularLanguages()
+        public async Task<IEnumerable<dynamic>> MostPopularLanguages()
         {
             var request = GetEndpoint(MostPopularLanguagesEndpoint);
             var result = await HttpRequestFactory.Get(request);
 
             var content = await result.Content.ReadAsStringAsync();
 
-            var json = JArray.Parse(content);
+            return JArray.Parse(content).ToObject<IEnumerable<dynamic>>();
+        }
+
+        public async Task<int[]> TopPojectsForUser(int id)
+        {
+            var request = GetEndpoint(ProjectPerUserEndpoint, id);
+            var result = await HttpRequestFactory.Get(request);
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JObject.Parse(content).ToObject<int[]>();
+        }
+
+        public async Task<int[]> RecomendedUsersForProject(int id)
+        {
+            var request = GetEndpoint(UserForProjcetsEndpoint, id);
+            var result = await HttpRequestFactory.Get(request);
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JObject.Parse(content).ToObject<int[]>();
+        }
+
+        public async Task<int[]> RecomendedProjectsForUser(int id)
+        {
+            var request = GetEndpoint(ProjectsForUserEndpoint, id);
+            var result = await HttpRequestFactory.Get(request);
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JObject.Parse(content).ToObject<int[]>();
         }
     }
 }
