@@ -12,6 +12,8 @@ namespace Collaboo.App.WebAPI.Services.Interfaces
          IEnumerable<Project> GetUserProjects(int userId, bool onlyOwner = false);
          Task UpdateProjectAsync(UpdateProjectDTO projectToUpdate, int projectId);
          Task AddUserToProject(int projectId, int userId);
+         Task AddUserToProject(int projectId, string login);
+
          Task<IEnumerable<User>> GetUsersFromProjectAsync(int projectId);
     }
 }
